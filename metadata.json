@@ -1,0 +1,5 @@
+{
+  "name": "汉字盲盒",
+  "description": "一个专为教师设计的汉字复习工具。生成宝可梦、奥特曼等主题的互动盲盒或A4打印纸，寓教于乐。",
+  "requestFramePermissions": []
+}
