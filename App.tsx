@@ -83,21 +83,17 @@ export default function App() {
 
   const handlePrint = () => {
     setViewMode('print');
-    // Removed automatic window.print() to show preview first
   };
 
-  const executePrint = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default button behavior
-    // Use a small timeout to allow event propagation to finish and ensure browser UI is ready
-    setTimeout(() => {
-      window.print();
-    }, 100);
+  const executePrint = () => {
+    window.print();
   };
 
   const themeConfig = THEME_CONFIG[currentTheme];
 
   return (
-    <div className="min-h-screen font-sans pb-20 selection:bg-pink-200">
+    // Added print:pb-0 and print:h-auto to ensure print layout isn't restricted by screen styles
+    <div className="min-h-screen font-sans pb-20 selection:bg-pink-200 print:pb-0 print:h-auto print:overflow-visible">
       
       {/* HEADER / CONTROLS - Hidden when printing */}
       <div className="no-print container mx-auto p-4 md:p-6 max-w-5xl">
@@ -106,7 +102,7 @@ export default function App() {
              汉字盲盒 <span className="text-4xl align-top">🎁</span>
           </h1>
           <p className="text-slate-500 font-cute text-lg bg-white/60 inline-block px-4 py-1 rounded-full backdrop-blur-sm">
-            Make learning magical & cute!
+            让识字变得神奇又可爱！
           </p>
         </header>
 
@@ -117,7 +113,7 @@ export default function App() {
             {/* Left: Input */}
             <div className="flex-1">
               <label className="block text-lg font-cute text-slate-600 mb-3 pl-2">
-                ✍️ Write your Hanzi here
+                ✍️ 在此输入汉字
               </label>
               <textarea
                 value={inputText}
@@ -134,7 +130,7 @@ export default function App() {
               {/* Theme Selector */}
               <div>
                 <label className="block text-lg font-cute text-slate-600 mb-3 pl-2">
-                  🎨 Pick a Theme
+                  🎨 选择主题
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {(Object.keys(THEME_CONFIG) as Theme[]).map((t) => (
@@ -170,7 +166,7 @@ export default function App() {
                       className={`toggle-label block overflow-hidden h-7 rounded-full cursor-pointer transition-colors ${showPinyin ? 'bg-green-300' : 'bg-gray-200'}`}
                     ></label>
                 </div>
-                <label htmlFor="pinyinToggle" className="text-slate-600 font-cute text-lg cursor-pointer">Show Pinyin</label>
+                <label htmlFor="pinyinToggle" className="text-slate-600 font-cute text-lg cursor-pointer">显示拼音</label>
               </div>
 
               <button
@@ -178,7 +174,7 @@ export default function App() {
                 disabled={isLoading}
                 className={`w-full py-4 px-6 text-white font-cute text-xl rounded-3xl shadow-lg shadow-orange-200 transition-all border-b-4 border-orange-400 active:border-b-0 active:translate-y-1 active:shadow-none flex items-center justify-center bg-orange-300 hover:bg-orange-400 disabled:opacity-70 disabled:cursor-not-allowed`}
               >
-                {isLoading ? 'Wait a sec...' : <><RefreshIcon /> Generate Box!</>}
+                {isLoading ? '请稍候...' : <><RefreshIcon /> 生成盲盒！</>}
               </button>
             </div>
           </div>
@@ -190,13 +186,13 @@ export default function App() {
              onClick={() => setViewMode('interactive')}
              className={`flex items-center px-8 py-3 rounded-full font-cute text-lg transition-all border-b-4 active:border-b-0 active:translate-y-1 ${viewMode === 'interactive' ? 'bg-slate-700 text-white border-slate-900 shadow-xl scale-105' : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50'}`}
            >
-             <PlayIcon /> Play Mode
+             <PlayIcon /> 互动模式
            </button>
            <button
              onClick={handlePrint}
              className={`flex items-center px-8 py-3 rounded-full font-cute text-lg transition-all border-b-4 active:border-b-0 active:translate-y-1 ${viewMode === 'print' ? 'bg-indigo-500 text-white border-indigo-700 shadow-xl scale-105' : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50'}`}
            >
-             <PrintIcon /> Print Mode
+             <PrintIcon /> 打印模式
            </button>
         </div>
       </div>
@@ -210,7 +206,7 @@ export default function App() {
              
              {/* Header Badge */}
              <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white px-8 py-3 rounded-3xl border-4 border-slate-800 shadow-lg z-20 whitespace-nowrap">
-                <span className="font-cute text-3xl text-slate-800">{themeConfig.icon} {themeConfig.name} Party</span>
+                <span className="font-cute text-3xl text-slate-800">{themeConfig.icon} {themeConfig.name} 派对</span>
              </div>
              
              <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 sm:gap-6 mt-8">
@@ -226,7 +222,7 @@ export default function App() {
              </div>
 
              <div className="mt-8 text-center text-slate-400 font-cute text-lg">
-               Tap the boxes to find Hanzi & {themeConfig.name} surprises!
+               点击盲盒发现汉字和{themeConfig.name}惊喜！
              </div>
           </div>
         )}
@@ -239,9 +235,9 @@ export default function App() {
             <div className="bg-white/95 backdrop-blur-md border border-indigo-100 shadow-xl rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="text-center sm:text-left">
                 <h3 className="font-cute font-bold text-indigo-900 flex items-center gap-2 justify-center sm:justify-start text-xl">
-                  <span>🖨️</span> Print Preview
+                  <span>🖨️</span> 打印预览
                 </h3>
-                <p className="text-sm font-cute text-indigo-400 mt-1">A4 • 2 Pages • Double Sided</p>
+                <p className="text-sm font-cute text-indigo-400 mt-1">A4 • 2 页 • 双面打印</p>
               </div>
               <div className="flex gap-3">
                  <button 
@@ -249,14 +245,14 @@ export default function App() {
                     onClick={() => setViewMode('interactive')}
                     className="px-5 py-2 text-sm font-cute font-bold text-slate-500 bg-slate-100 border-b-2 border-slate-200 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
                   >
-                    Back
+                    返回
                   </button>
                   <button 
                     type="button"
                     onClick={executePrint}
                     className="px-6 py-2 text-sm font-cute font-bold text-white bg-indigo-500 border-b-4 border-indigo-700 hover:bg-indigo-600 rounded-xl shadow-lg active:border-b-0 active:translate-y-1 transition-all flex items-center gap-2 cursor-pointer"
                   >
-                    <PrintIcon /> Print Now
+                    <PrintIcon /> 立即打印
                   </button>
               </div>
             </div>
@@ -266,12 +262,12 @@ export default function App() {
             {/* Page 1: Covers */}
             <div className="relative group">
                <div className="no-print absolute -left-16 top-0 bottom-0 hidden lg:flex flex-col justify-center">
-                  <span className="text-slate-300 font-cute text-xl -rotate-90 tracking-widest whitespace-nowrap">PAGE 1: COVER</span>
+                  <span className="text-slate-300 font-cute text-xl -rotate-90 tracking-widest whitespace-nowrap">第 1 页：封面</span>
                </div>
                <div className="a4-page bg-white relative mx-auto shadow-xl print:shadow-none ring-1 ring-black/5">
                   <div className="absolute top-10 left-10 right-10 text-center border-b-4 border-dashed border-slate-100 pb-4 flex justify-between items-end">
-                      <h2 className="text-3xl font-cute text-slate-300 uppercase tracking-widest">Hanzi Blind Box</h2>
-                      <div className="text-md font-cute text-slate-400 bg-slate-50 px-3 py-1 rounded-lg">Theme: {themeConfig.name}</div>
+                      <h2 className="text-3xl font-cute text-slate-300 uppercase tracking-widest">汉字盲盒</h2>
+                      <div className="text-md font-cute text-slate-400 bg-slate-50 px-3 py-1 rounded-lg">主题: {themeConfig.name}</div>
                   </div>
                   
                   <div className="grid grid-cols-3 grid-rows-4 gap-6 h-full pt-28 pb-16 px-10">
@@ -280,18 +276,18 @@ export default function App() {
                       ))}
                   </div>
                   
-                  <div className="absolute bottom-6 right-10 text-slate-300 text-xs font-mono">PAGE 1/2: COVER LAYER (CUT HOLES)</div>
+                  <div className="absolute bottom-6 right-10 text-slate-300 text-xs font-mono">第 1/2 页：封面层 (需剪裁)</div>
                </div>
             </div>
 
             {/* Page 2: Content */}
             <div className="relative group">
               <div className="no-print absolute -left-16 top-0 bottom-0 hidden lg:flex flex-col justify-center">
-                  <span className="text-slate-300 font-cute text-xl -rotate-90 tracking-widest whitespace-nowrap">PAGE 2: CONTENT</span>
+                  <span className="text-slate-300 font-cute text-xl -rotate-90 tracking-widest whitespace-nowrap">第 2 页：内容</span>
                </div>
               <div className="a4-page bg-white relative mx-auto shadow-xl print:shadow-none ring-1 ring-black/5">
                 <div className="absolute top-10 left-10 right-10 text-center border-b-4 border-dashed border-slate-100 pb-4 flex justify-between items-end">
-                    <h2 className="text-3xl font-cute text-slate-700 uppercase tracking-widest">Gotta Learn 'Em All!</h2>
+                    <h2 className="text-3xl font-cute text-slate-700 uppercase tracking-widest">快乐识字 寓教于乐</h2>
                     <div className="text-md font-cute text-slate-400 bg-slate-50 px-3 py-1 rounded-lg">汉字复习</div>
                 </div>
 
@@ -301,7 +297,7 @@ export default function App() {
                     ))}
                 </div>
                 
-                <div className="absolute bottom-6 right-10 text-slate-300 text-xs font-mono">PAGE 2/2: CONTENT LAYER</div>
+                <div className="absolute bottom-6 right-10 text-slate-300 text-xs font-mono">第 2/2 页：内容层</div>
               </div>
             </div>
           </div>

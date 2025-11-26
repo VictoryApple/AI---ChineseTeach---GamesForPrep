@@ -54,11 +54,11 @@ export const CaveCard: React.FC<CaveCardProps> = ({ item, mode, index, showPinyi
 
           {/* Label */}
           <div className={`absolute -top-3 bg-white px-3 py-1 rounded-full border border-gray-200 shadow-sm z-10`}>
-             <span className="text-sm font-cute text-gray-400">Box #{index + 1}</span>
+             <span className="text-sm font-cute text-gray-400">盲盒 #{index + 1}</span>
           </div>
 
           <div className="absolute bottom-2 text-[10px] text-gray-400 font-bold tracking-widest z-10 font-cute">
-             ✂️ CUT OUT
+             ✂️ 沿虚线剪开
           </div>
         </div>
       </div>
@@ -86,7 +86,7 @@ export const CaveCard: React.FC<CaveCardProps> = ({ item, mode, index, showPinyi
                 {item.imageUrl ? (
                   <img src={item.imageUrl} alt="Surprise" className="w-full h-full object-contain drop-shadow-sm" />
                 ) : (
-                  <span className="text-xs text-gray-400 font-cute">Loading AI...</span>
+                  <span className="text-xs text-gray-400 font-cute">正在生成...</span>
                 )}
              </div>
           )}
@@ -124,7 +124,7 @@ export const CaveCard: React.FC<CaveCardProps> = ({ item, mode, index, showPinyi
         </div>
 
         <div className="absolute bottom-4 px-4 py-1 bg-black/10 rounded-full backdrop-blur-sm">
-          <span className="text-white font-cute font-bold text-xs uppercase tracking-widest">Tap Me!</span>
+          <span className="text-white font-cute font-bold text-xs uppercase tracking-widest">点我！</span>
         </div>
 
         <div className="absolute top-3 right-3 bg-white/20 w-8 h-8 rounded-full flex items-center justify-center text-white font-cute font-bold shadow-sm">
@@ -138,23 +138,28 @@ export const CaveCard: React.FC<CaveCardProps> = ({ item, mode, index, showPinyi
       `}>
         {item.type === 'text' ? (
           <div className="flex flex-col items-center justify-center h-full w-full relative">
-            {showPinyin && (
-              <span className="text-xl sm:text-2xl text-gray-400 font-bold mb-1 font-cute tracking-wide">{item.subContent}</span>
-            )}
+            {/* Content Wrapper: 
+                - pb-6 on mobile lifts the text block up to avoid overlap with the bottom-right button 
+                - w-full ensures centering
+            */}
+            <div className="flex flex-col items-center justify-center pb-6 sm:pb-0 w-full z-10">
+              {showPinyin && (
+                <span className="text-base sm:text-2xl text-gray-400 font-bold mb-0 sm:mb-1 font-cute tracking-wide whitespace-nowrap">{item.subContent}</span>
+              )}
+              
+              <span className="text-4xl sm:text-7xl font-kaiti font-bold text-gray-800 drop-shadow-sm leading-tight">{item.content}</span>
+            </div>
             
-            {/* The main character - big and bold KaiTi */}
-            <span className="text-6xl sm:text-7xl font-kaiti font-bold text-gray-800 drop-shadow-sm">{item.content}</span>
-            
-            {/* Play Button - Cute floating style */}
+            {/* Play Button - Cute floating style, smaller on mobile */}
             <button 
               onClick={handleSpeak}
               disabled={isSpeaking}
-              className={`absolute -bottom-1 -right-1 sm:bottom-0 sm:right-0 p-3 rounded-full transition-all shadow-sm
+              className={`absolute bottom-0 right-0 p-1.5 sm:p-3 rounded-full transition-all shadow-sm z-20
                  ${isSpeaking ? 'bg-gray-100 text-gray-400 scale-95' : 'bg-blue-50 text-blue-400 hover:bg-blue-100 hover:scale-110 hover:shadow-md'}
               `}
-              title="Read Aloud"
+              title="朗读"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-6 w-6 ${isSpeaking ? 'animate-pulse' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 sm:h-6 sm:w-6 ${isSpeaking ? 'animate-pulse' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
               </svg>
             </button>
@@ -169,11 +174,11 @@ export const CaveCard: React.FC<CaveCardProps> = ({ item, mode, index, showPinyi
              ) : (
                <div className="flex flex-col items-center text-gray-400 animate-pulse z-10">
                  <div className="w-12 h-12 rounded-full bg-gray-100 mb-2 border-4 border-gray-50"></div>
-                 <span className="text-xs font-cute">Loading...</span>
+                 <span className="text-xs font-cute">加载中...</span>
                </div>
              )}
              <span className={`absolute bottom-2 font-cute text-white text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-md z-20 ${themeConfig.accent}`}>
-               Surprise!
+               惊喜！
              </span>
           </div>
         )}

@@ -94,39 +94,58 @@
           size: A4;
           margin: 0;
         }
-        body {
-          background: white;
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
+        
+        /* CRITICAL FIX: Ensure body and root take full height and are visible */
+        html, body, #root {
+          height: auto !important;
+          min-height: 0 !important;
+          overflow: visible !important;
+          background: white !important;
+          margin: 0 !important;
+          padding: 0 !important;
         }
+
         .no-print {
           display: none !important;
         }
-        .print-only {
-          display: block !important;
-        }
         
-        /* Force container to block for proper paging */
+        /* Force container to block for proper paging and ensure it's visible */
         .print-container {
           display: block !important;
+          visibility: visible !important;
+          position: static !important;
+          width: 100% !important;
+          height: auto !important;
+          overflow: visible !important;
         }
 
         .a4-page {
-          width: 210mm;
-          height: 297mm;
-          margin: 0;
-          margin-bottom: 0;
+          width: 210mm !important;
+          height: 297mm !important;
+          margin: 0 !important;
+          padding: 0 !important;
           page-break-after: always;
+          break-after: page;
           border: none !important;
           box-shadow: none !important;
-          /* Ensure no transform scaling happens during print */
-          transform: none !important; 
+          transform: none !important;
+          /* Ensure colors print */
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
         }
 
         /* Hide the preview wrapper styling during print */
-        .print-preview-wrapper {
-          display: block;
+        .print-preview-wrapper, .relative.group {
+          display: block !important;
           transform: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: none !important;
+        }
+
+        /* Hide anything else that might be lingering */
+        body > :not(#root) {
+          display: none !important;
         }
       }
     </style>
