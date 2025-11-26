@@ -9,6 +9,45 @@ interface CaveCardProps {
   showPinyin: boolean;
 }
 
+// Helper to get darker shadow color based on background color class
+const getShadowColor = (bgClass: string) => {
+  switch (bgClass) {
+    case 'bg-[#facbbd]': return '#e6a693'; // Pink darker
+    case 'bg-[#fceccb]': return '#e6ce99'; // Yellow darker
+    case 'bg-[#d6f2e4]': return '#a6dabb'; // Green darker
+    case 'bg-[#e2dbf8]': return '#c4b6ea'; // Purple darker
+    case 'bg-[#d0e8ff]': return '#9dc4e8'; // Blue darker
+    default: return '#cbd5e1';
+  }
+};
+
+// Simple Pop Sound Generator using Web Audio API
+const playPopSound = () => {
+  try {
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const oscillator = ctx.createOscillator();
+    const gainNode = ctx.createGain();
+
+    oscillator.connect(gainNode);
+    gainNode.connect(ctx.destination);
+
+    // Sound Design: A quick pitch sweep up (Bloop/Pop)
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(400, ctx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.1);
+
+    gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + 0.15);
+  } catch (e) {
+    console.error("Audio play failed", e);
+  }
+};
+
 export const CaveCard: React.FC<CaveCardProps> = ({ item, mode, index, showPinyin }) => {
   const [isRevealed, setIsRevealed] = useState(item.isRevealed);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -18,14 +57,14 @@ export const CaveCard: React.FC<CaveCardProps> = ({ item, mode, index, showPinyi
 
   const handleReveal = () => {
     if (mode === 'interactive' && !isRevealed && !isAnimating) {
-      // Trigger animation
+      playPopSound(); // Play Sound
       setIsAnimating(true);
       
-      // Delay reveal to allow animation to play partway through
+      // Delay the actual state change slightly to allow the "anticipation" animation to play
       setTimeout(() => {
         setIsRevealed(true);
         setIsAnimating(false);
-      }, 350);
+      }, 300);
     }
   };
 
@@ -37,152 +76,134 @@ export const CaveCard: React.FC<CaveCardProps> = ({ item, mode, index, showPinyi
     setIsSpeaking(false);
   };
 
-  // --- PRINT MODE: PAGE 1 (Cover / Holes) ---
+  // --- PRINT MODE STYLES (Simple & Clean) ---
   if (mode === 'print-cover') {
     return (
-      <div className="w-full h-full flex items-center justify-center p-2">
-        {/* The Blind Box "Box" Look */}
-        <div className={`relative w-full h-full rounded-2xl border-4 border-dashed border-gray-300 flex flex-col items-center justify-center bg-white overflow-hidden`}>
-          
-          {/* Colorful Pattern Background */}
-          <div className={`absolute inset-0 opacity-20 ${themeConfig.pattern} ${themeConfig.bg}`}></div>
-
-          {/* Hole Cutting Guide */}
-          <div className="absolute inset-2 border-2 border-gray-200 border-dashed rounded-full flex items-center justify-center bg-gray-50">
-             <span className="text-4xl font-cute font-black text-gray-300 opacity-50">?</span>
-          </div>
-
-          {/* Label */}
-          <div className={`absolute -top-3 bg-white px-3 py-1 rounded-full border border-gray-200 shadow-sm z-10`}>
-             <span className="text-sm font-cute text-gray-400">盲盒 #{index + 1}</span>
-          </div>
-
-          <div className="absolute bottom-2 text-[10px] text-gray-400 font-bold tracking-widest z-10 font-cute">
-             ✂️ 沿虚线剪开
-          </div>
+      <div className="w-full h-full p-2">
+        <div className="w-full h-full rounded-2xl border-2 border-dashed border-gray-300 flex items-center justify-center relative bg-gray-50">
+           <span className="text-3xl text-gray-300 font-cute">?</span>
+           <div className="absolute bottom-2 text-[10px] text-gray-400 font-cute">剪裁线</div>
         </div>
       </div>
     );
   }
 
-  // --- PRINT MODE: PAGE 2 (Content) ---
   if (mode === 'print-content') {
     return (
       <div className="w-full h-full p-2">
-        <div className={`w-full h-full rounded-3xl flex flex-col items-center justify-center border-4 ${item.color.replace('bg-', 'border-').replace('500', '200').replace('400', '200')} bg-white relative overflow-hidden`}>
-          
-          {/* Background decoration */}
-          <div className={`absolute top-0 left-0 w-full h-4 ${item.color.replace('bg-', 'bg-').replace('500', '100').replace('400', '100')}`}></div>
-          <div className={`absolute bottom-0 left-0 w-full h-4 ${item.color.replace('bg-', 'bg-').replace('500', '100').replace('400', '100')}`}></div>
-
-          {item.type === 'text' ? (
-            <div className="flex flex-col items-center z-10">
-              {showPinyin && <div className="text-xl text-gray-400 font-bold mb-1 font-cute tracking-widest">{item.subContent}</div>}
-              {/* Using font-kaiti for standard KaiTi font */}
-              <div className="text-6xl font-kaiti text-gray-800 font-bold">{item.content}</div>
-            </div>
-          ) : (
-             <div className="flex flex-col items-center justify-center h-full w-full p-2">
-                {item.imageUrl ? (
-                  <img src={item.imageUrl} alt="Surprise" className="w-full h-full object-contain drop-shadow-sm" />
-                ) : (
-                  <span className="text-xs text-gray-400 font-cute">正在生成...</span>
-                )}
-             </div>
-          )}
-          <div className="absolute bottom-1 right-3 text-xs text-gray-300 font-cute">#{index + 1}</div>
-        </div>
+         {item.type === 'text' ? (
+           <div className={`w-full h-full rounded-2xl border-4 ${item.color.replace('bg-', 'border-').replace('100', '200').replace('200', '300')} bg-white flex flex-col items-center justify-center`}>
+              {showPinyin && <div className="text-xl text-gray-500 font-bold mb-2 font-cute">{item.subContent}</div>}
+              <div className="text-6xl font-kaiti font-bold text-black">{item.content}</div>
+           </div>
+         ) : (
+           <div className={`w-full h-full rounded-2xl border-4 border-dashed border-gray-200 bg-white flex items-center justify-center`}>
+              {item.imageUrl ? <img src={item.imageUrl} className="w-24 h-24 object-contain" /> : null}
+           </div>
+         )}
       </div>
     );
   }
 
-  // --- INTERACTIVE MODE ---
-  // A cute, bouncy, 3D-ish card style
+  // --- INTERACTIVE MODE (3D Block Style) ---
+  const shadowColor = getShadowColor(item.color);
+  const isPressed = isRevealed; // The card stays "pressed" once revealed
+
   return (
-    <div 
-      onClick={handleReveal}
-      className={`relative w-full aspect-square rounded-[2rem] transition-all duration-300 transform cursor-pointer overflow-hidden group select-none
-        ${isAnimating ? 'animate-pop' : ''}
-        ${!isRevealed && !isAnimating ? 'hover:scale-105 hover:-rotate-1 hover:shadow-2xl' : 'shadow-md'}
-        ${isRevealed ? 'bg-white ring-4 ring-offset-2 ' + item.color.replace('bg-', 'ring-') : 'shadow-xl'}
-      `}
-    >
-      {/* The Cover (Blind Box Lid) */}
-      <div className={`absolute inset-0 flex flex-col items-center justify-center transition-all duration-700 z-20
-        ${isRevealed ? 'opacity-0 pointer-events-none scale-150' : 'opacity-100'}
-        ${themeConfig.bg}
-      `}>
-        {/* Pattern Overlay */}
-        <div className={`absolute inset-0 opacity-30 ${themeConfig.pattern}`}></div>
-        
-        {/* 3D Reflection Highlight */}
-        <div className="absolute top-4 left-4 right-4 h-1/3 bg-gradient-to-b from-white/30 to-transparent rounded-t-[1.5rem]"></div>
-
-        {/* Center Badge */}
-        <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-full flex items-center justify-center shadow-[0_4px_0_rgba(0,0,0,0.1)] border-4 border-white/50 group-hover:scale-110 transition-transform duration-300">
-            <span className={`text-3xl sm:text-4xl font-cute select-none ${themeConfig.bg.replace('bg-', 'text-')}`}>?</span>
-        </div>
-
-        <div className="absolute bottom-4 px-4 py-1 bg-black/10 rounded-full backdrop-blur-sm">
-          <span className="text-white font-cute font-bold text-xs uppercase tracking-widest">点我！</span>
-        </div>
-
-        <div className="absolute top-3 right-3 bg-white/20 w-8 h-8 rounded-full flex items-center justify-center text-white font-cute font-bold shadow-sm">
-          {index + 1}
-        </div>
-      </div>
-
-      {/* The Content */}
-      <div className={`absolute inset-0 flex flex-col items-center justify-center p-2 sm:p-3 z-10 bg-white
-         ${isRevealed ? 'animate-bounce-in' : 'opacity-0'}
-      `}>
-        {item.type === 'text' ? (
-          <div className="flex flex-col items-center justify-center h-full w-full relative">
-            {/* Content Wrapper: 
-                - pb-6 on mobile lifts the text block up to avoid overlap with the bottom-right button 
-                - w-full ensures centering
-            */}
-            <div className="flex flex-col items-center justify-center pb-6 sm:pb-0 w-full z-10">
-              {showPinyin && (
-                <span className="text-base sm:text-2xl text-gray-400 font-bold mb-0 sm:mb-1 font-cute tracking-wide whitespace-nowrap">{item.subContent}</span>
-              )}
-              
-              <span className="text-4xl sm:text-7xl font-kaiti font-bold text-gray-800 drop-shadow-sm leading-tight">{item.content}</span>
+    <div className="w-full aspect-square relative select-none">
+        <div 
+        onClick={handleReveal}
+        style={{
+            boxShadow: isPressed 
+            ? 'none' 
+            : `0 10px 0 ${shadowColor}`,
+            transform: isPressed 
+            ? 'translateY(10px)' 
+            : 'translateY(0)',
+        }}
+        className={`
+            relative w-full h-full rounded-[2rem] cursor-pointer 
+            transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]
+            ${item.color}
+            ${isPressed ? 'shadow-inner border-t-4 border-black/5' : 'border-b-4 border-white/20'}
+        `}
+        >
+        {/* CARD CONTENT */}
+        <div className="absolute inset-0 p-5 flex flex-col justify-between">
+            
+            {/* HEADER: Category / Rating lookalike */}
+            <div className="flex justify-between items-start">
+            <div className="bg-white/40 backdrop-blur-sm rounded-full p-2 w-10 h-10 flex items-center justify-center">
+                <span className="text-lg">
+                {isRevealed 
+                    ? (item.type === 'text' ? '📖' : '🎁')
+                    : themeConfig.icon
+                }
+                </span>
             </div>
             
-            {/* Play Button - Cute floating style, smaller on mobile */}
-            <button 
-              onClick={handleSpeak}
-              disabled={isSpeaking}
-              className={`absolute bottom-0 right-0 p-1.5 sm:p-3 rounded-full transition-all shadow-sm z-20
-                 ${isSpeaking ? 'bg-gray-100 text-gray-400 scale-95' : 'bg-blue-50 text-blue-400 hover:bg-blue-100 hover:scale-110 hover:shadow-md'}
-              `}
-              title="朗读"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 sm:h-6 sm:w-6 ${isSpeaking ? 'animate-pulse' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-              </svg>
-            </button>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center w-full h-full justify-center relative rounded-xl overflow-hidden">
-             {/* Simple colorful background for surprise */}
-             <div className={`absolute inset-0 opacity-20 ${item.color}`}></div>
-             
-             {item.imageUrl ? (
-                <img src={item.imageUrl} alt="Surprise" className="w-full h-full object-contain relative z-10 drop-shadow-md animate-pulse-slow transform hover:scale-110 transition-transform duration-500" />
-             ) : (
-               <div className="flex flex-col items-center text-gray-400 animate-pulse z-10">
-                 <div className="w-12 h-12 rounded-full bg-gray-100 mb-2 border-4 border-gray-50"></div>
-                 <span className="text-xs font-cute">加载中...</span>
-               </div>
-             )}
-             <span className={`absolute bottom-2 font-cute text-white text-[10px] uppercase tracking-wider px-3 py-1 rounded-full shadow-md z-20 ${themeConfig.accent}`}>
-               惊喜！
-             </span>
-          </div>
-        )}
-      </div>
+            {/* Fake Rating Pill */}
+            <div className="bg-white px-2 py-1 rounded-lg flex items-center gap-1 shadow-sm">
+                <span className="text-yellow-400 text-xs">★</span>
+                <span className="text-xs font-bold text-slate-700">4.{8 + (index % 2)}</span>
+            </div>
+            </div>
+
+            {/* BODY: Main Content */}
+            <div className="flex-1 flex items-center justify-center relative">
+            
+            {/* UNREVEALED STATE */}
+            <div className={`transition-all duration-300 absolute inset-0 flex flex-col items-center justify-center
+                ${isRevealed ? 'opacity-0 scale-50 pointer-events-none' : 'opacity-100 scale-100'}
+            `}>
+                <span className="text-lg font-cute text-slate-700/60 mb-1">盲盒</span>
+                <span className="text-4xl font-cute text-slate-800 opacity-20">?</span>
+            </div>
+
+            {/* REVEALED STATE */}
+            <div className={`transition-all duration-500 delay-100 ease-[cubic-bezier(0.34,1.56,0.64,1)] flex flex-col items-center justify-center w-full z-10
+                ${isRevealed ? 'opacity-100 scale-100' : 'opacity-0 scale-50'}
+            `}>
+                {item.type === 'text' ? (
+                    <>
+                    {showPinyin && (
+                        <span className="text-sm sm:text-lg text-slate-600 font-bold font-cute mb-1 tracking-wider bg-white/30 px-3 rounded-full">{item.subContent}</span>
+                    )}
+                    <div className="relative group/text">
+                        <span className="text-5xl sm:text-6xl font-kaiti font-bold text-slate-800 drop-shadow-sm">{item.content}</span>
+                        
+                        {/* TTS Button */}
+                        <button 
+                        onClick={handleSpeak}
+                        className="absolute -right-8 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full hover:bg-white hover:scale-110 transition-all shadow-sm opacity-0 group-hover/text:opacity-100"
+                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" className={`h-4 w-4 text-slate-600 ${isSpeaking ? 'animate-pulse text-pink-400' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        </svg>
+                        </button>
+                    </div>
+                    </>
+                ) : (
+                    <div className="w-24 h-24 sm:w-28 sm:h-28 relative">
+                    {item.imageUrl ? (
+                        <img src={item.imageUrl} className="w-full h-full object-contain drop-shadow-md animate-pop" alt="surprise" />
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+                        </div>
+                    )}
+                    </div>
+                )}
+            </div>
+            </div>
+
+            {/* FOOTER: Just Index now, avatars removed */}
+            <div className="flex justify-end items-end h-6">
+                <span className="text-xs font-bold text-slate-500/50 font-mono">#{index + 1}</span>
+            </div>
+
+        </div>
+        </div>
     </div>
   );
 };

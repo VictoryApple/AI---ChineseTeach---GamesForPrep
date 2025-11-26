@@ -5,55 +5,39 @@ import { generateGridItems } from './utils/pokemonUtils';
 import { GridItem, Theme, THEME_CONFIG } from './types';
 
 // Icons
-const PrintIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-  </svg>
-);
-
-const PlayIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
-);
-
-const RefreshIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-  </svg>
-);
+const HomeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>;
+const GridIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>;
+const SettingsIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
+const BellIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>;
+const PrintIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" /></svg>;
+const DownloadIcon = () => <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>;
 
 export default function App() {
   const [inputText, setInputText] = useState("汉字盲盒");
   const [items, setItems] = useState<GridItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showPinyin, setShowPinyin] = useState(true);
-  const [viewMode, setViewMode] = useState<'interactive' | 'print'>('interactive');
   const [currentTheme, setCurrentTheme] = useState<Theme>('pokemon');
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  
+  // Track active page logic for UI
+  const [activeTab, setActiveTab] = useState<'interactive' | 'print'>('interactive');
 
   // Initial Load
   useEffect(() => {
     handleGenerate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency array to run only once on mount
+  }, []); 
 
   const handleGenerate = async () => {
     setIsLoading(true);
-    
-    // 1. Clean input
     const cleanText = inputText.replace(/[^\u4e00-\u9fa5]/g, '');
     const chars = cleanText.split('').filter(c => c.trim() !== '');
-
-    // 2. Generate Pinyin
     const pinyinData = await generatePinyinData(chars);
-
-    // 3. Create Grid Structure (Texts + Empty Surprise Slots)
     const newItems = generateGridItems(pinyinData, currentTheme, 12);
-    setItems(newItems); // Render layout immediately
+    setItems(newItems);
     setIsLoading(false);
 
-    // 4. If theme requires AI generation (not Pokemon), fetch images in background
     if (currentTheme !== 'pokemon') {
       generateAIImages(newItems, currentTheme);
     }
@@ -62,17 +46,12 @@ export default function App() {
   const generateAIImages = async (gridItems: GridItem[], theme: Theme) => {
     const stylePrompts: Record<Theme, string> = {
       pokemon: 'pokemon creature',
-      ultraman: 'Ultraman superhero, silver and red sci-fi suit, glowing eyes, tokusatsu style, cute chibi version',
-      bluey: 'Bluey style cartoon dog, rectangular shape, pastel colors, flat design, cute',
-      sanrio: 'Sanrio style cute character, kawaii, Hello Kitty aesthetics, pink and white, soft rounded shapes'
+      ultraman: 'Ultraman superhero, silver and red sci-fi suit, glowing eyes, chibi style',
+      bluey: 'Bluey style cartoon dog, pastel colors, flat design, cute',
+      sanrio: 'Sanrio style cute character, kawaii, Hello Kitty aesthetics, soft rounded shapes'
     };
-
     const prompt = stylePrompts[theme];
-    
-    // Find items that need images
     const surpriseItems = gridItems.filter(item => item.type === 'surprise' && !item.imageUrl);
-    
-    // Generate images in parallel for efficiency
     await Promise.all(surpriseItems.map(async (item) => {
       const imageUrl = await generateCharacterImage(theme, prompt);
       if (imageUrl) {
@@ -81,230 +60,247 @@ export default function App() {
     }));
   };
 
-  const handlePrint = () => {
-    setViewMode('print');
+  const handleDownloadPDF = async () => {
+    if (!(window as any).html2pdf) {
+      alert("PDF 组件未加载，请刷新页面重试");
+      return;
+    }
+    setIsGeneratingPdf(true);
+    await new Promise(resolve => setTimeout(resolve, 200));
+    const element = document.getElementById('pdf-content');
+    if (element) {
+      const opt = {
+        margin: 0,
+        filename: `汉字盲盒-${THEME_CONFIG[currentTheme].name}-${new Date().toISOString().slice(0,10)}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      try {
+        await (window as any).html2pdf().set(opt).from(element).save();
+      } catch (err) {
+        console.error("PDF generation error:", err);
+        alert("生成 PDF 失败，请重试");
+      }
+    }
+    setIsGeneratingPdf(false);
   };
-
-  const executePrint = () => {
-    window.print();
-  };
-
-  const themeConfig = THEME_CONFIG[currentTheme];
 
   return (
-    // Added print:pb-0 and print:h-auto to ensure print layout isn't restricted by screen styles
-    <div className="min-h-screen font-sans pb-20 selection:bg-pink-200 print:pb-0 print:h-auto print:overflow-visible">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-[#FDFBF8] text-slate-800 font-sans overflow-x-hidden print:bg-white">
       
-      {/* HEADER / CONTROLS - Hidden when printing */}
-      <div className="no-print container mx-auto p-4 md:p-6 max-w-5xl">
-        <header className="mb-8 text-center pt-4">
-          <h1 className="text-5xl md:text-6xl font-cute tracking-wide mb-3 animate-bounce-in text-slate-800 drop-shadow-sm">
-             汉字盲盒 <span className="text-4xl align-top">🎁</span>
+      {/* 1. LEFT SIDEBAR - NAVIGATION */}
+      <aside className="no-print lg:w-24 bg-[#FDFBF8] flex lg:flex-col items-center justify-between lg:justify-start py-4 lg:py-8 px-4 border-b lg:border-b-0 lg:border-r border-slate-100 z-10">
+        <div className="mb-0 lg:mb-12">
+           <div className="w-10 h-10 bg-black text-white rounded-xl flex items-center justify-center font-bold text-xl font-cute">
+             盒
+           </div>
+        </div>
+        
+        <nav className="flex lg:flex-col gap-6">
+           <button 
+             onClick={() => setActiveTab('interactive')}
+             className={`p-3 rounded-2xl transition-all ${activeTab === 'interactive' ? 'bg-black text-white shadow-lg' : 'bg-white text-slate-400 hover:bg-slate-100'}`}
+           >
+             <HomeIcon />
+           </button>
+           <button 
+             onClick={() => setActiveTab('print')}
+             className={`p-3 rounded-2xl transition-all ${activeTab === 'print' ? 'bg-black text-white shadow-lg' : 'bg-white text-slate-400 hover:bg-slate-100'}`}
+           >
+             <PrintIcon />
+           </button>
+           <button className="p-3 rounded-2xl bg-white text-slate-400 hover:bg-slate-100 hidden lg:block">
+             <GridIcon />
+           </button>
+        </nav>
+
+        <div className="hidden lg:block mt-auto">
+          <button className="p-3 rounded-2xl bg-white text-slate-400 hover:bg-slate-100">
+             <SettingsIcon />
+          </button>
+        </div>
+      </aside>
+
+      {/* 2. MAIN CONTENT AREA */}
+      <main className="flex-1 p-4 lg:p-8 overflow-y-auto no-scrollbar">
+        
+        {/* Header */}
+        <header className="no-print mb-8">
+          <h1 className="text-4xl lg:text-5xl font-cute text-slate-800 mb-6">
+            快乐识字 <br className="hidden lg:block"/>
+            <span className="text-slate-400">汉字盲盒</span>
           </h1>
-          <p className="text-slate-500 font-cute text-lg bg-white/60 inline-block px-4 py-1 rounded-full backdrop-blur-sm">
-            让识字变得神奇又可爱！
-          </p>
+          
+          {/* Theme Pills */}
+          <div className="flex gap-4 overflow-x-auto pb-2 no-scrollbar">
+             <button className="px-5 py-2 rounded-full bg-black text-white font-bold text-sm whitespace-nowrap">
+               全部
+             </button>
+             {(Object.keys(THEME_CONFIG) as Theme[]).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setCurrentTheme(t)}
+                  className={`px-5 py-2 rounded-full font-bold text-sm whitespace-nowrap transition-all border border-transparent
+                    ${currentTheme === t 
+                      ? 'bg-white border-slate-200 shadow-md text-slate-800' 
+                      : 'bg-[#F2F0EB] text-slate-400 hover:bg-[#e8e6e1]'
+                    }`}
+                >
+                  {THEME_CONFIG[t].icon} {THEME_CONFIG[t].name}
+                </button>
+             ))}
+          </div>
         </header>
 
-        {/* Control Panel - "Cloud" style */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 md:p-8 mb-10 border border-white/50">
-          <div className="flex flex-col lg:flex-row gap-8">
-            
-            {/* Left: Input */}
-            <div className="flex-1">
-              <label className="block text-lg font-cute text-slate-600 mb-3 pl-2">
-                ✍️ 在此输入汉字
-              </label>
-              <textarea
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
-                className="w-full p-5 border-2 border-slate-100 rounded-3xl focus:border-pink-300 focus:ring-4 focus:ring-pink-100 outline-none transition-all resize-none text-xl shadow-inner bg-slate-50 font-kaiti text-slate-700"
-                rows={3}
-                placeholder="在此输入汉字，例如：天空，学校..."
-              />
-            </div>
-
-            {/* Right: Controls */}
-            <div className="flex flex-col gap-5 lg:w-80">
-              
-              {/* Theme Selector */}
-              <div>
-                <label className="block text-lg font-cute text-slate-600 mb-3 pl-2">
-                  🎨 选择主题
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  {(Object.keys(THEME_CONFIG) as Theme[]).map((t) => (
-                     <button
-                       key={t}
-                       onClick={() => setCurrentTheme(t)}
-                       className={`px-3 py-3 rounded-2xl text-sm font-cute font-bold transition-all border-b-4 active:border-b-0 active:translate-y-1
-                         ${currentTheme === t 
-                           ? `${THEME_CONFIG[t].bg} text-white border-black/20 shadow-lg transform scale-105` 
-                           : 'bg-slate-100 text-slate-400 border-slate-200 hover:bg-slate-200'
-                         }`}
-                     >
-                       {THEME_CONFIG[t].icon} {THEME_CONFIG[t].name}
-                     </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Toggles */}
-              <div className="flex items-center gap-3 bg-white p-3 pl-4 rounded-2xl border-2 border-slate-100">
-                <div className="relative inline-block w-12 mr-2 align-middle select-none transition duration-200 ease-in">
-                    <input 
-                      type="checkbox" 
-                      name="toggle" 
-                      id="pinyinToggle" 
-                      checked={showPinyin}
-                      onChange={(e) => setShowPinyin(e.target.checked)}
-                      className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer transition-all duration-300 left-0 checked:left-6 checked:border-green-400"
-                      style={{ top: '2px' }}
-                    />
-                    <label 
-                      htmlFor="pinyinToggle" 
-                      className={`toggle-label block overflow-hidden h-7 rounded-full cursor-pointer transition-colors ${showPinyin ? 'bg-green-300' : 'bg-gray-200'}`}
-                    ></label>
-                </div>
-                <label htmlFor="pinyinToggle" className="text-slate-600 font-cute text-lg cursor-pointer">显示拼音</label>
-              </div>
-
-              <button
-                onClick={handleGenerate}
-                disabled={isLoading}
-                className={`w-full py-4 px-6 text-white font-cute text-xl rounded-3xl shadow-lg shadow-orange-200 transition-all border-b-4 border-orange-400 active:border-b-0 active:translate-y-1 active:shadow-none flex items-center justify-center bg-orange-300 hover:bg-orange-400 disabled:opacity-70 disabled:cursor-not-allowed`}
-              >
-                {isLoading ? '请稍候...' : <><RefreshIcon /> 生成盲盒！</>}
-              </button>
-            </div>
+        {/* --- INTERACTIVE GRID VIEW --- */}
+        <div className={activeTab === 'interactive' ? 'block' : 'hidden'}>
+          <div className="no-print mb-4 flex justify-between items-center">
+             <h2 className="text-xl font-bold font-cute text-slate-700">盲盒列表</h2>
+             <span className="text-sm text-slate-400 bg-white px-3 py-1 rounded-full">共 {items.length} 个</span>
           </div>
-        </div>
-
-        {/* View Toggle */}
-        <div className="flex justify-center gap-6 mb-8">
-           <button
-             onClick={() => setViewMode('interactive')}
-             className={`flex items-center px-8 py-3 rounded-full font-cute text-lg transition-all border-b-4 active:border-b-0 active:translate-y-1 ${viewMode === 'interactive' ? 'bg-slate-700 text-white border-slate-900 shadow-xl scale-105' : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50'}`}
-           >
-             <PlayIcon /> 互动模式
-           </button>
-           <button
-             onClick={handlePrint}
-             className={`flex items-center px-8 py-3 rounded-full font-cute text-lg transition-all border-b-4 active:border-b-0 active:translate-y-1 ${viewMode === 'print' ? 'bg-indigo-500 text-white border-indigo-700 shadow-xl scale-105' : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-50'}`}
-           >
-             <PrintIcon /> 打印模式
-           </button>
-        </div>
-      </div>
-
-      {/* MAIN CONTENT AREA */}
-      <div className="container mx-auto flex justify-center px-4">
-        
-        {/* INTERACTIVE MODE */}
-        {viewMode === 'interactive' && (
-          <div className={`no-print bg-white p-8 rounded-[3rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border-8 max-w-4xl w-full relative ${themeConfig.bg.replace('bg-', 'border-')}`}>
-             
-             {/* Header Badge */}
-             <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-white px-8 py-3 rounded-3xl border-4 border-slate-800 shadow-lg z-20 whitespace-nowrap">
-                <span className="font-cute text-3xl text-slate-800">{themeConfig.icon} {themeConfig.name} 派对</span>
-             </div>
-             
-             <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 sm:gap-6 mt-8">
-               {items.map((item, index) => (
-                 <CaveCard 
-                   key={item.id} 
-                   item={item} 
-                   index={index} 
-                   mode="interactive"
-                   showPinyin={showPinyin} 
-                 />
-               ))}
-             </div>
-
-             <div className="mt-8 text-center text-slate-400 font-cute text-lg">
-               点击盲盒发现汉字和{themeConfig.name}惊喜！
-             </div>
-          </div>
-        )}
-
-        {/* PRINT PREVIEW / MODE */}
-        <div className={`print-container flex-col items-center w-full ${viewMode === 'interactive' ? 'hidden' : 'flex'}`}>
           
-          {/* Print Preview Toolbar - Sticky Top */}
-          <div className="no-print sticky top-4 z-50 w-full max-w-2xl mx-auto mb-8 pointer-events-auto">
-            <div className="bg-white/95 backdrop-blur-md border border-indigo-100 shadow-xl rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-center sm:text-left">
-                <h3 className="font-cute font-bold text-indigo-900 flex items-center gap-2 justify-center sm:justify-start text-xl">
-                  <span>🖨️</span> 打印预览
-                </h3>
-                <p className="text-sm font-cute text-indigo-400 mt-1">A4 • 2 页 • 双面打印</p>
-              </div>
-              <div className="flex gap-3">
-                 <button 
-                    type="button"
-                    onClick={() => setViewMode('interactive')}
-                    className="px-5 py-2 text-sm font-cute font-bold text-slate-500 bg-slate-100 border-b-2 border-slate-200 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
-                  >
-                    返回
-                  </button>
-                  <button 
-                    type="button"
-                    onClick={executePrint}
-                    className="px-6 py-2 text-sm font-cute font-bold text-white bg-indigo-500 border-b-4 border-indigo-700 hover:bg-indigo-600 rounded-xl shadow-lg active:border-b-0 active:translate-y-1 transition-all flex items-center gap-2 cursor-pointer"
-                  >
-                    <PrintIcon /> 立即打印
-                  </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="print-preview-wrapper w-full flex flex-col items-center gap-12">
-            {/* Page 1: Covers */}
-            <div className="relative group">
-               <div className="no-print absolute -left-16 top-0 bottom-0 hidden lg:flex flex-col justify-center">
-                  <span className="text-slate-300 font-cute text-xl -rotate-90 tracking-widest whitespace-nowrap">第 1 页：封面</span>
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6 animate-fade-in pb-20 lg:pb-0">
+             {items.map((item, index) => (
+               <CaveCard 
+                 key={item.id} 
+                 item={item} 
+                 index={index} 
+                 mode="interactive"
+                 showPinyin={showPinyin} 
+               />
+             ))}
+             {items.length === 0 && !isLoading && (
+               <div className="col-span-full py-20 text-center text-slate-400 font-cute">
+                 输入汉字并点击“生成”开始游戏！
                </div>
-               <div className="a4-page bg-white relative mx-auto shadow-xl print:shadow-none ring-1 ring-black/5">
-                  <div className="absolute top-10 left-10 right-10 text-center border-b-4 border-dashed border-slate-100 pb-4 flex justify-between items-end">
-                      <h2 className="text-3xl font-cute text-slate-300 uppercase tracking-widest">汉字盲盒</h2>
-                      <div className="text-md font-cute text-slate-400 bg-slate-50 px-3 py-1 rounded-lg">主题: {themeConfig.name}</div>
+             )}
+          </div>
+        </div>
+
+        {/* --- PRINT PREVIEW VIEW --- */}
+        <div className={activeTab === 'print' ? 'block' : 'hidden'}>
+           <div className="no-print bg-black text-white rounded-3xl p-6 mb-8 flex justify-between items-center shadow-xl">
+             <div>
+               <h3 className="text-2xl font-cute">准备打印?</h3>
+               <p className="text-slate-400 text-sm mt-1">生成 A4 PDF 文件，包含封面和内容页。</p>
+             </div>
+             <button 
+               onClick={handleDownloadPDF}
+               disabled={isGeneratingPdf}
+               className="bg-white text-black px-6 py-3 rounded-xl font-bold font-cute hover:bg-slate-200 disabled:opacity-50 flex items-center gap-2"
+             >
+               {isGeneratingPdf ? '生成中...' : <><DownloadIcon /> 下载 PDF</>}
+             </button>
+           </div>
+           
+           {/* PDF Content Wrapper */}
+           <div id="pdf-content" className={`flex flex-col items-center ${isGeneratingPdf ? '' : 'gap-8'}`}>
+              {/* Cover Page */}
+              <div className={`a4-page bg-white p-10 ${isGeneratingPdf ? '' : 'shadow-lg'}`}>
+                  <div className="text-center border-b-2 border-dashed border-slate-100 pb-4 mb-8 flex justify-between items-end">
+                      <h2 className="text-2xl font-cute text-slate-300">汉字盲盒封面</h2>
+                      <div className="text-sm font-cute text-slate-400">主题: {THEME_CONFIG[currentTheme].name}</div>
                   </div>
-                  
-                  <div className="grid grid-cols-3 grid-rows-4 gap-6 h-full pt-28 pb-16 px-10">
+                  <div className="grid grid-cols-3 grid-rows-4 gap-4 h-[230mm]">
                       {items.map((item, index) => (
                         <CaveCard key={`cover-${item.id}`} item={item} index={index} mode="print-cover" showPinyin={showPinyin} />
                       ))}
                   </div>
-                  
-                  <div className="absolute bottom-6 right-10 text-slate-300 text-xs font-mono">第 1/2 页：封面层 (需剪裁)</div>
-               </div>
-            </div>
+              </div>
 
-            {/* Page 2: Content */}
-            <div className="relative group">
-              <div className="no-print absolute -left-16 top-0 bottom-0 hidden lg:flex flex-col justify-center">
-                  <span className="text-slate-300 font-cute text-xl -rotate-90 tracking-widest whitespace-nowrap">第 2 页：内容</span>
-               </div>
-              <div className="a4-page bg-white relative mx-auto shadow-xl print:shadow-none ring-1 ring-black/5">
-                <div className="absolute top-10 left-10 right-10 text-center border-b-4 border-dashed border-slate-100 pb-4 flex justify-between items-end">
-                    <h2 className="text-3xl font-cute text-slate-700 uppercase tracking-widest">快乐识字 寓教于乐</h2>
-                    <div className="text-md font-cute text-slate-400 bg-slate-50 px-3 py-1 rounded-lg">汉字复习</div>
+              {/* Content Page */}
+              <div className={`a4-page bg-white p-10 ${isGeneratingPdf ? '' : 'shadow-lg'}`}>
+                <div className="text-center border-b-2 border-dashed border-slate-100 pb-4 mb-8 flex justify-between items-end">
+                    <h2 className="text-2xl font-cute text-slate-700">汉字内容页</h2>
+                    <div className="text-sm font-cute text-slate-400">请沿虚线剪开封面粘贴</div>
                 </div>
-
-                <div className="grid grid-cols-3 grid-rows-4 gap-6 h-full pt-28 pb-16 px-10">
+                <div className="grid grid-cols-3 grid-rows-4 gap-4 h-[230mm]">
                     {items.map((item, index) => (
                       <CaveCard key={`content-${item.id}`} item={item} index={index} mode="print-content" showPinyin={showPinyin} />
                     ))}
                 </div>
-                
-                <div className="absolute bottom-6 right-10 text-slate-300 text-xs font-mono">第 2/2 页：内容层</div>
               </div>
-            </div>
-          </div>
+           </div>
+        </div>
+      </main>
 
+      {/* 3. RIGHT SIDEBAR - CONTROLS */}
+      <aside className="no-print w-full lg:w-80 bg-[#FDFBF8] p-4 lg:p-8 border-l border-slate-100 flex flex-col gap-6">
+        
+        {/* User Profile / Top Bar */}
+        <div className="flex justify-between items-center">
+           <button className="p-2 rounded-full hover:bg-slate-100 relative">
+             <BellIcon />
+             <span className="absolute top-2 right-2 w-2 h-2 bg-red-400 rounded-full"></span>
+           </button>
+           <div className="flex items-center gap-3">
+             <div className="text-right hidden sm:block">
+               <div className="font-bold text-sm text-slate-800">语文老师</div>
+               <div className="text-xs text-slate-400">Admin</div>
+             </div>
+             <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="avatar" />
+             </div>
+           </div>
         </div>
 
-      </div>
+        {/* Input Card */}
+        <div className="bg-white p-5 rounded-[2rem] shadow-sm">
+           <div className="flex justify-between items-center mb-4">
+             <h3 className="font-bold text-slate-700">输入汉字</h3>
+             <span className="text-xs bg-slate-100 px-2 py-1 rounded text-slate-400">Activity</span>
+           </div>
+           
+           <textarea
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              className="w-full p-4 bg-[#F8F6F4] rounded-2xl border-none resize-none text-slate-700 font-kaiti text-lg focus:ring-2 focus:ring-slate-200 outline-none mb-4"
+              rows={4}
+              placeholder="例如：天空，学校..."
+            />
+            
+            <button
+               onClick={handleGenerate}
+               disabled={isLoading}
+               className="w-full py-3 bg-black text-white rounded-xl font-bold hover:bg-slate-800 transition-colors disabled:opacity-50"
+            >
+               {isLoading ? '生成中...' : '重新生成'}
+            </button>
+        </div>
+
+        {/* Toggle Widget */}
+        <div className="bg-[#E0F2FE] p-5 rounded-[2rem] flex items-center justify-between">
+           <div>
+             <div className="font-bold text-sky-800">显示拼音</div>
+             <div className="text-xs text-sky-600/70">辅助识字</div>
+           </div>
+           
+           <button 
+             onClick={() => setShowPinyin(!showPinyin)}
+             className={`w-12 h-7 rounded-full p-1 transition-colors duration-300 ${showPinyin ? 'bg-sky-500' : 'bg-sky-200'}`}
+           >
+             <div className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${showPinyin ? 'translate-x-5' : 'translate-x-0'}`}></div>
+           </button>
+        </div>
+
+        {/* My Courses / Featured (Just Decoration or History) */}
+        <div className="bg-[#FCE7F3] p-5 rounded-[2rem] flex-1 min-h-[150px] relative overflow-hidden group">
+           <div className="absolute top-0 right-0 p-5 opacity-20 transform rotate-12 group-hover:rotate-0 transition-transform duration-500">
+              <span className="text-6xl">🎁</span>
+           </div>
+           <h3 className="font-bold text-pink-900 mb-1">精选主题</h3>
+           <p className="text-xs text-pink-700/70 mb-4">来自 AI 的创意生成</p>
+           
+           <div className="flex gap-2">
+             <div className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center text-xs">⚡</div>
+             <div className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center text-xs">🎀</div>
+             <div className="w-8 h-8 rounded-full bg-white/50 flex items-center justify-center text-xs">🦴</div>
+           </div>
+        </div>
+
+      </aside>
+
     </div>
   );
 }

@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>汉字盲盒 (Hanzi Blind Box)</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-      /* Added ZCOOL KuaiLe for the cute font */
-      @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700&family=ZCOOL+KuaiLe&display=swap');
+      /* Font Setup */
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Ma+Shan+Zheng&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700&family=ZCOOL+KuaiLe&family=Nunito:wght@400;600;700;800&display=swap');
       
       body {
-        font-family: 'Fredoka', 'Noto Sans SC', sans-serif;
+        font-family: 'Nunito', 'Fredoka', 'Noto Sans SC', sans-serif;
+        background-color: #FDFBF8; /* Cream/Warm White background */
       }
 
       .font-handwriting {
@@ -22,38 +24,32 @@
         font-family: 'ZCOOL KuaiLe', cursive;
       }
 
-      /* KaiTi Font Stack: Tries system KaiTi first (standard for education), falls back to Noto Serif SC */
+      /* KaiTi Font Stack */
       .font-kaiti {
         font-family: "KaiTi", "STKaiti", "楷体", "BiauKai", "Noto Serif SC", serif;
       }
 
-      /* Cute Background Pattern */
-      .bg-pattern-cute {
-        background-color: #f8fafc;
-        background-image: radial-gradient(#e2e8f0 15%, transparent 16%), radial-gradient(#e2e8f0 15%, transparent 16%);
-        background-size: 30px 30px;
-        background-position: 0 0, 15px 15px;
+      /* Scrollbar Styling for Sidebar/Content */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
       }
-      
-      /* Theme specific patterns (softer) */
-      .pattern-dots {
-        background-image: radial-gradient(rgba(255,255,255,0.4) 20%, transparent 20%), radial-gradient(rgba(255,255,255,0.4) 20%, transparent 20%);
-        background-position: 0 0, 10px 10px;
-        background-size: 20px 20px;
+      ::-webkit-scrollbar-track {
+        background: transparent; 
       }
-      .pattern-grid {
-        background-image: linear-gradient(rgba(255,255,255,0.3) 2px, transparent 2px), linear-gradient(90deg, rgba(255,255,255,0.3) 2px, transparent 2px);
-        background-size: 30px 30px;
+      ::-webkit-scrollbar-thumb {
+        background: #e2e8f0; 
+        border-radius: 4px;
       }
-      .pattern-stripes {
-        background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.2) 10px, rgba(255,255,255,0.2) 20px);
+      ::-webkit-scrollbar-thumb:hover {
+        background: #cbd5e1; 
       }
 
-      /* Custom Animations */
+      /* Animations */
       @keyframes pop {
         0% { transform: scale(1); }
         40% { transform: scale(0.95); }
-        75% { transform: scale(1.15); }
+        75% { transform: scale(1.05); }
         100% { transform: scale(1); }
       }
       
@@ -61,22 +57,16 @@
         animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
 
-      @keyframes bounce-in {
-        0% { opacity: 0; transform: scale(0.3); }
-        50% { opacity: 1; transform: scale(1.05); }
-        70% { transform: scale(0.9); }
-        100% { opacity: 1; transform: scale(1); }
+      @keyframes fade-in-up {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
       }
 
-      .animate-bounce-in {
-        animation: bounce-in 0.5s cubic-bezier(0.215, 0.610, 0.355, 1.000) both;
-      }
-      
-      .animate-pulse-slow {
-        animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      .animate-fade-in {
+        animation: fade-in-up 0.6s ease-out forwards;
       }
 
-      /* A4 Page Dimensions - Shared by Preview and Print */
+      /* A4 Page Dimensions */
       .a4-page {
         width: 210mm;
         height: 297mm;
@@ -84,7 +74,6 @@
         margin: 0 auto;
         overflow: hidden;
         position: relative;
-        /* Default for preview: adds spacing */
         margin-bottom: 2rem; 
       }
 
@@ -95,7 +84,6 @@
           margin: 0;
         }
         
-        /* CRITICAL FIX: Ensure body and root take full height and are visible */
         html, body, #root {
           height: auto !important;
           min-height: 0 !important;
@@ -109,7 +97,6 @@
           display: none !important;
         }
         
-        /* Force container to block for proper paging and ensure it's visible */
         .print-container {
           display: block !important;
           visibility: visible !important;
@@ -129,12 +116,8 @@
           border: none !important;
           box-shadow: none !important;
           transform: none !important;
-          /* Ensure colors print */
-          -webkit-print-color-adjust: exact;
-          print-color-adjust: exact;
         }
 
-        /* Hide the preview wrapper styling during print */
         .print-preview-wrapper, .relative.group {
           display: block !important;
           transform: none !important;
@@ -143,7 +126,6 @@
           border: none !important;
         }
 
-        /* Hide anything else that might be lingering */
         body > :not(#root) {
           display: none !important;
         }
@@ -160,7 +142,7 @@
 }
 </script>
 </head>
-  <body class="bg-pattern-cute text-slate-700">
+  <body>
     <div id="root"></div>
   </body>
 </html>
